@@ -11,10 +11,10 @@ import json,requests,statistics,time
 
 app = Flask(__name__)
 
-tk = "CHANNEL_ACCESS_TOKEN"
-secret = "CHANNEL_SECRET"
-line_bot_api = LineBotApi(os.environ.get(tk))
-handler = WebhookHandler(os.environ.get(secret))
+tk = os.environ.get("CHANNEL_ACCESS_TOKEN")
+secret = os.environ.get("CHANNEL_SECRET")
+line_bot_api = LineBotApi(tk)
+handler = WebhookHandler(secret)
 
 
 @app.route("/", methods=["GET", "POST"])
