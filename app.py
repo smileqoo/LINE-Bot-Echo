@@ -26,8 +26,8 @@ def callback():
         try:
             body = request.get_data(as_text='true')
             json_data = json.loads(body)
-            print(json_data)
-            signature = request.headers['x-line-signature']
+            #print(json_data)
+            signature = request.headers['X-Line-Signature']
             handler = handler.handle(body,signature)
             #取得位置
             events = json_data['events']
@@ -102,7 +102,7 @@ def aqi(address):
         return msg
         
     except:
-        print('錯誤有問題')
+        #print('錯誤有問題')
         return msg
 
 #天氣預報
@@ -154,7 +154,7 @@ def forcast(address):
         return msg
 
     except:
-        print('錯誤有問題')
+        #print('錯誤有問題')
         return msg
 
 #天氣資訊
@@ -195,13 +195,13 @@ def current_weather(address):
         for i in loc:
             #print(i)
             if i in address:
-                print(i) #測試
+               # print(i) #測試
                 temp = f"氣溫 {loc[i]['temp']} 度，" if loc[i]['temp'] != False else ''
                 humd = f"濕度 {loc[i]['humd']}%，" if loc[i]['temp'] != False else ''
                 r24 = f"累積雨量 {loc[i]['r24']}mm" if loc[i]['r24'] != False else ''
                 description = f'{temp}{humd}{r24}'.strip('，')
                 a = f'{description}'
-                print(a) #測試
+                #print(a) #測試
                 break
         return a
     
@@ -221,7 +221,7 @@ def current_weather(address):
     
           
     except :
-        print('網址有問題')
+        #print('網址有問題')
         return msg
     
 #地震資訊
@@ -257,7 +257,7 @@ def reply_msg(tk,re_tk,msg):
                         ]
         }
     req = requests.request('POST','https://api.line.me/v2/bot/message/reply',headers=headers,data=json.dumps(body))
-    print(req.text)
+    #print(req.text)
 
 def reply_img(tk,re_tk,img):
     headers = {'Authorization':'Bearer '+tk,'Content-Type':'application/json'}
@@ -271,7 +271,7 @@ def reply_img(tk,re_tk,img):
                         ]
         }
     req = requests.request('POST','https://api.line.me/v2/bot/message/reply',headers=headers,data=json.dumps(body))
-    print(req.text)
+    #print(req.text)
 
 def reply_earthquake(tk,re_tk,info_data):
     headers = {'Authorization':'Bearer '+tk,'Content-Type':'application/json'}
@@ -290,5 +290,5 @@ def reply_earthquake(tk,re_tk,info_data):
                         ]
         }
     req = requests.request('POST','https://api.line.me/v2/bot/message/reply',headers=headers,data=json.dumps(body))
-    print(req.text)    
+    #print(req.text)    
     
