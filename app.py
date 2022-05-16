@@ -19,19 +19,43 @@ handler = WebhookHandler(secret)
 
 @app.route("/", methods=["GET", "POST"])
 def callback():
-
     if request.method == "GET":
         return "Hello Heroku"
     if request.method == "POST":
-        signature = request.headers["X-Line-Signature"]
-        body = request.get_data(as_text=True)
-
+        #建立訊息
         try:
-            handler.handle(body, signature)
+            body = request.get_data(as_text='true')
+            json_data = json.loads(body)
+            print(json_data)
+            signature = request.headers['x-line-signature']
+            handler = handler.handle(body,signature)
+            #取得位置
+            events = json_data['events']
+            if events:
+                events = events[0]
+                msg_type = events['message']['type']
+                reply_token = events['replyToken']
+                
+                if 'text' in msg_type:
+                    msg = events['message']['text']
+                    if '氣象' in msg or '雷達' in msg:
+                        img = f'https://cwbopendata.s3.ap-northeast-1.amazonaws.com/MSC/O-A0058-003.png?{time.time_ns()}'
+                        reply_img(tk,reply_token,img)
+                    elif '地震' in msg:
+                        info_data = earth_quake()
+                        reply_earthquake(tk,reply_token,info_data)
+                    else :                
+                        reply_msg(tk,reply_token,msg)
+                        
+                elif 'location' in msg_type:
+                    address = events['message']['address'].replace('台','臺')
+                    #weather_data = current_weather(address)
+                    msg = f'{address}\n\n{current_weather(address)}\n\n{aqi(address)}\n\n{forcast(address)}'
+                    reply_msg(tk,reply_token,msg) #↑函數直接插入
+            
         except InvalidSignatureError:
             abort(400)
-
-        return "OK"
+        return 'ok'
     
 #空氣品質
 def aqi(address):
