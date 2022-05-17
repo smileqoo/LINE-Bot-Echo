@@ -31,6 +31,8 @@ def callback():
             #handler = handler.handle(body,signature)
         signature = request.headers["X-Line-Signature"]
         body = request.get_data(as_text=True)
+        json_data = json.loads(body)
+        print(json_data)
 
         try:
             handler.handle(body, signature)
