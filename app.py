@@ -36,7 +36,7 @@ def callback():
 
         try:
             handler.handle(body, signature)
-            '''
+            
             #取得位置
             events = json_data['events']
             if events:
@@ -60,7 +60,7 @@ def callback():
                     #weather_data = current_weather(address)
                     msg = f'{address}\n\n{current_weather(address)}\n\n{aqi(address)}\n\n{forcast(address)}'
                     reply_msg(tk,reply_token,msg) #↑函數直接插入
-                '''
+                
         except InvalidSignatureError:
             abort(400)
         return 'ok'
