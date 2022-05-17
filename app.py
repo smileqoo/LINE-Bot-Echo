@@ -23,12 +23,17 @@ def callback():
         return "Hello Heroku"
     if request.method == "POST":
         #建立訊息
+        #try:
+            #body = request.get_data(as_text=True)
+            #json_data = json.loads(body)
+            #print(json_data)
+            #signature = request.headers['X-Line-Signature']
+            #handler = handler.handle(body,signature)
+        signature = request.headers["X-Line-Signature"]
+        body = request.get_data(as_text=True)
+
         try:
-            body = request.get_data(as_text=True)
-            json_data = json.loads(body)
-            print(json_data)
-            signature = request.headers['X-Line-Signature']
-            handler = handler.handle(body,signature)
+            handler.handle(body, signature)
             '''
             #取得位置
             events = json_data['events']
